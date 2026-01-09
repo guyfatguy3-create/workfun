@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>$CLITORIS</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --yellow: #F5A623;
+            --yellow-light: #FFD666;
+            --yellow-glow: rgba(245, 166, 35, 0.4);
+            --black: #0D0D0D;
+            --dark: #141414;
+            --gray: #1a1a1a;
+            --gray-light: #2a2a2a;
+            --text: #ffffff;
+            --text-dim: #888888;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            background: var(--black);
+            color: var(--text);
+            font-family: 'Space Grotesk', sans-serif;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+        
+        /* NAV */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 15px 0;
+            background: rgba(13, 13, 13, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--gray);
+        }
+        
+        .nav-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .nav-logo {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--yellow);
+            text-decoration: none;
+        }
+        
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+        
+        .nav-links a {
+            color: var(--text-dim);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        
+        .nav-links a:hover {
+            color: var(--yellow);
+        }
+        
+        .nav-cta {
+            background: var(--yellow);
+            color: var(--black);
+            padding: 10px 24px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 14px;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+        
+        .nav-cta:hover {
+            box-shadow: 0 0 30px var(--yellow-glow);
+            transform: translateY(-2px);
+        }
+        
+        /* HERO */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 100px 20px;
+        }
+        
+        .hero-content {
+            max-width: 700px;
+        }
+        
+        .hero-logo {
+            width: 200px;
+            height: 200px;
+            margin: 0 auto 40px;
+            animation: float 4s ease-in-out infinite;
+        }
+        
+        .hero-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        
+        /* SVG Logo */
+        .logo-svg {
+            width: 200px;
+            height: 200px;
+            margin: 0 auto 40px;
+            animation: float 4s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+        
+        .hero-title {
+            font-size: 64px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            letter-spacing: -2px;
+        }
+        
+        .hero-title span {
+            color: var(--yellow);
+        }
+        
+        .hero-subtitle {
+            font-size: 20px;
+            color: var(--text-dim);
+            margin-bottom: 40px;
+            line-height: 1.7;
+        }
+        
+        .hero-buttons {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .btn-primary {
+            background: var(--yellow);
+            color: var(--black);
+            padding: 16px 40px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 16px;
+            border-radius: 10px;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .btn-primary:hover {
+            box-shadow: 0 0 40px var(--yellow-glow);
+            transform: translateY(-3px);
+        }
+        
+        .btn-secondary {
+            background: var(--gray);
+            color: var(--text);
+            padding: 16px 40px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 16px;
+            border-radius: 10px;
+            transition: all 0.2s;
+            border: 1px solid var(--gray-light);
+        }
+        
+        .btn-secondary:hover {
+            border-color: var(--yellow);
+            color: var(--yellow);
+        }
+        
+        /* Marquee */
+        .marquee-container {
+            overflow: hidden;
+            background: var(--yellow);
+            padding: 15px 0;
+        }
+        
+        .marquee {
+            display: flex;
+            animation: marquee 20s linear infinite;
+            white-space: nowrap;
+        }
+        
+        .marquee-content {
+            display: flex;
+            gap: 50px;
+            padding-right: 50px;
+        }
+        
+        .marquee-content span {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--black);
+            text-transform: uppercase;
+        }
+        
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        
+        /* Story Section */
+        .section {
+            padding: 100px 0;
+        }
+        
+        .section-title {
+            font-size: 42px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            letter-spacing: -1px;
+        }
+        
+        .section-title span {
+            color: var(--yellow);
+        }
+        
+        .story-content {
+            max-width: 700px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        
+        .story-text {
+            font-size: 18px;
+            color: var(--text-dim);
+            line-height: 1.9;
+            margin-bottom: 30px;
+        }
+        
+        .story-quote {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--yellow);
+            font-style: italic;
+            padding: 30px;
+            border: 1px solid var(--gray-light);
+            border-radius: 12px;
+            background: var(--gray);
+        }
+        
+        /* How To Buy */
+        .how-section {
+            background: var(--dark);
+            padding: 100px 0;
+        }
+        
+        .how-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+            margin-top: 50px;
+        }
+        
+        .how-card {
+            background: var(--gray);
+            border: 1px solid var(--gray-light);
+            border-radius: 16px;
+            padding: 30px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+        
+        .how-card:hover {
+            border-color: var(--yellow);
+            transform: translateY(-5px);
+        }
+        
+        .how-icon {
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+        
+        .how-card h3 {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--yellow);
+            margin-bottom: 12px;
+            text-transform: uppercase;
+        }
+        
+        .how-card p {
+            font-size: 14px;
+            color: var(--text-dim);
+            line-height: 1.6;
+        }
+        
+        /* Meme Lab */
+        .meme-lab {
+            padding: 100px 0;
+            text-align: center;
+        }
+        
+        .meme-generator {
+            max-width: 500px;
+            margin: 50px auto 0;
+            background: var(--gray);
+            border: 1px solid var(--gray-light);
+            border-radius: 20px;
+            padding: 30px;
+        }
+        
+        .meme-preview {
+            width: 100%;
+            aspect-ratio: 1;
+            background: var(--black);
+            border-radius: 12px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .meme-preview svg {
+            width: 60%;
+            height: 60%;
+        }
+        
+        .meme-caption {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--yellow);
+            color: var(--black);
+            padding: 8px 20px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 14px;
+            max-width: 80%;
+            text-align: center;
+        }
+        
+        .meme-input {
+            width: 100%;
+            background: var(--black);
+            border: 1px solid var(--gray-light);
+            border-radius: 10px;
+            padding: 15px;
+            color: var(--text);
+            font-family: inherit;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+        
+        .meme-input:focus {
+            outline: none;
+            border-color: var(--yellow);
+        }
+        
+        .meme-buttons {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .meme-btn {
+            flex: 1;
+            background: var(--gray-light);
+            border: none;
+            color: var(--text);
+            padding: 12px;
+            border-radius: 8px;
+            font-family: inherit;
+            font-weight: 600;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .meme-btn:hover {
+            background: var(--yellow);
+            color: var(--black);
+        }
+        
+        .meme-btn.primary {
+            background: var(--yellow);
+            color: var(--black);
+        }
+        
+        /* CA Section */
+        .ca-section {
+            background: var(--dark);
+            padding: 60px 0;
+            text-align: center;
+        }
+        
+        .ca-box {
+            background: var(--gray);
+            border: 1px solid var(--gray-light);
+            border-radius: 12px;
+            padding: 20px 30px;
+            display: inline-flex;
+            align-items: center;
+            gap: 15px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .ca-box:hover {
+            border-color: var(--yellow);
+        }
+        
+        .ca-label {
+            font-size: 12px;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .ca-address {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 14px;
+            color: var(--yellow);
+            word-break: break-all;
+        }
+        
+        .ca-copy {
+            background: var(--yellow);
+            color: var(--black);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .ca-copy:hover {
+            box-shadow: 0 0 20px var(--yellow-glow);
+        }
+        
+        /* Footer */
+        footer {
+            padding: 60px 0;
+            text-align: center;
+            border-top: 1px solid var(--gray);
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-bottom: 30px;
+        }
+        
+        .footer-links a {
+            color: var(--text-dim);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        
+        .footer-links a:hover {
+            color: var(--yellow);
+        }
+        
+        .footer-copy {
+            font-size: 14px;
+            color: var(--text-dim);
+        }
+        
+        .footer-copy span {
+            color: var(--yellow);
+        }
+        
+        /* Responsive */
+        @media (max-width: 900px) {
+            .how-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .nav-links { display: none; }
+            .hero-title { font-size: 42px; }
+        }
+        
+        @media (max-width: 600px) {
+            .how-grid {
+                grid-template-columns: 1fr;
+            }
+            .hero-title { font-size: 32px; }
+            .section-title { font-size: 28px; }
+            .hero-buttons { flex-direction: column; }
+            .ca-box { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+    <!-- NAV -->
+    <nav>
+        <div class="container nav-inner">
+            <a href="#" class="nav-logo">$CLITORIS</a>
+            <div class="nav-links">
+                <a href="#story">STORY</a>
+                <a href="#how">HOW TO BUY</a>
+                <a href="#meme">MEME LAB</a>
+                <a href="https://x.com/clitorisfun" target="_blank">TWITTER</a>
+            </div>
+            <a href="https://pump.fun" target="_blank" class="nav-cta">BUY NOW</a>
+        </div>
+    </nav>
+    
+    <!-- HERO -->
+    <section class="hero">
+        <div class="hero-content">
+            <svg class="logo-svg" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- Outer petals -->
+                <path d="M100 20 C60 20 30 60 30 100 C30 140 60 180 100 180 C80 140 80 60 100 20" stroke="#F5A623" stroke-width="8" stroke-linecap="round" fill="none"/>
+                <path d="M100 20 C140 20 170 60 170 100 C170 140 140 180 100 180 C120 140 120 60 100 20" stroke="#F5A623" stroke-width="8" stroke-linecap="round" fill="none"/>
+                <!-- Center line -->
+                <path d="M100 50 Q95 100 105 160" stroke="#F5A623" stroke-width="5" stroke-linecap="round" fill="none"/>
+                <!-- Dots -->
+                <circle cx="85" cy="90" r="6" fill="#F5A623"/>
+                <circle cx="115" cy="105" r="5" fill="#F5A623"/>
+            </svg>
+            <h1 class="hero-title">It's just a <span>$CLITORIS</span></h1>
+            <p class="hero-subtitle">
+                Dev used $clitoris to battle-test the tech before $snowball.<br>
+                The project grew wings. The community took over.<br>
+                It became the ultimate stress-test for the ecosystem.
+            </p>
+            <div class="hero-buttons">
+                <a href="https://pump.fun" target="_blank" class="btn-primary">
+                    BUY $CLITORIS
+                </a>
+                <a href="#story" class="btn-secondary">
+                    READ THE STORY
+                </a>
+            </div>
+        </div>
+    </section>
+    
+    <!-- MARQUEE -->
+    <div class="marquee-container">
+        <div class="marquee">
+            <div class="marquee-content">
+                <span>$CLITORIS</span>
+                <span>•</span>
+                <span>NO UTILITY</span>
+                <span>•</span>
+                <span>JUST VIBES</span>
+                <span>•</span>
+                <span>TESTED THE SNOWBALL TECH</span>
+                <span>•</span>
+                <span>$CLITORIS</span>
+                <span>•</span>
+                <span>NO UTILITY</span>
+                <span>•</span>
+                <span>JUST VIBES</span>
+                <span>•</span>
+                <span>TESTED THE SNOWBALL TECH</span>
+                <span>•</span>
+            </div>
+            <div class="marquee-content">
+                <span>$CLITORIS</span>
+                <span>•</span>
+                <span>NO UTILITY</span>
+                <span>•</span>
+                <span>JUST VIBES</span>
+                <span>•</span>
+                <span>TESTED THE SNOWBALL TECH</span>
+                <span>•</span>
+                <span>$CLITORIS</span>
+                <span>•</span>
+                <span>NO UTILITY</span>
+                <span>•</span>
+                <span>JUST VIBES</span>
+                <span>•</span>
+                <span>TESTED THE SNOWBALL TECH</span>
+                <span>•</span>
+            </div>
+        </div>
+    </div>
+    
+    <!-- STORY -->
+    <section class="section" id="story">
+        <div class="container">
+            <div class="story-content">
+                <h2 class="section-title">The <span>Story</span></h2>
+                <p class="story-text">
+                    Dev used $clitoris to battle-test the tech before $snowball. 
+                    What started as a simple experiment became something more. 
+                    The project grew wings. The community took over. 
+                    It became the ultimate stress-test for the ecosystem.
+                </p>
+                <p class="story-text">
+                    No roadmap. No promises. No utility. 
+                    Just pure, unadulterated vibes and a community that refuses to let go.
+                </p>
+                <div class="story-quote">
+                    "It's just a clitoris. But it's our clitoris."
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- HOW TO BUY -->
+    <section class="how-section" id="how">
+        <div class="container">
+            <h2 class="section-title" style="text-align: center;">How To <span>Buy</span></h2>
+            <p style="text-align: center; color: var(--text-dim); font-size: 18px;">The $clitoris way</p>
+            <div class="how-grid">
+                <div class="how-card">
+                    <div class="how-icon">👻</div>
+                    <h3>WALLET</h3>
+                    <p>Get Phantom. It's safe and yellow (mostly).</p>
+                </div>
+                <div class="how-card">
+                    <div class="how-icon">◎</div>
+                    <h3>SOL</h3>
+                    <p>Load up on SOL. Transfers are instant.</p>
+                </div>
+                <div class="how-card">
+                    <div class="how-icon">🔍</div>
+                    <h3>PUMP</h3>
+                    <p>Paste the CA on Pump.fun search bar.</p>
+                </div>
+                <div class="how-card">
+                    <div class="how-icon">⚡</div>
+                    <h3>SWAP</h3>
+                    <p>Swap SOL for $CLITORIS. Feel the power.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- MEME LAB -->
+    <section class="meme-lab" id="meme">
+        <div class="container">
+            <h2 class="section-title">Meme <span>Lab</span></h2>
+            <p style="color: var(--text-dim); font-size: 18px;">Draw Something Crude</p>
+            <div class="meme-generator">
+                <div class="meme-preview">
+                    <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M100 20 C60 20 30 60 30 100 C30 140 60 180 100 180 C80 140 80 60 100 20" stroke="#F5A623" stroke-width="8" stroke-linecap="round" fill="none"/>
+                        <path d="M100 20 C140 20 170 60 170 100 C170 140 140 180 100 180 C120 140 120 60 100 20" stroke="#F5A623" stroke-width="8" stroke-linecap="round" fill="none"/>
+                        <path d="M100 50 Q95 100 105 160" stroke="#F5A623" stroke-width="5" stroke-linecap="round" fill="none"/>
+                        <circle cx="85" cy="90" r="6" fill="#F5A623"/>
+                        <circle cx="115" cy="105" r="5" fill="#F5A623"/>
+                    </svg>
+                    <div class="meme-caption" id="memeCaption">gm frens</div>
+                </div>
+                <input type="text" class="meme-input" id="captionInput" placeholder="Enter caption..." maxlength="50">
+                <div class="meme-buttons">
+                    <button class="meme-btn" onclick="randomCaption()">RANDOM</button>
+                    <button class="meme-btn primary" onclick="generateMeme()">GENERATE</button>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- CA SECTION -->
+    <section class="ca-section">
+        <div class="container">
+            <div class="ca-box">
+                <div>
+                    <div class="ca-label">Contract Address</div>
+                    <div class="ca-address" id="caAddress">dev adding within 2 mins</div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- FOOTER -->
+    <footer>
+        <div class="container">
+            <div class="footer-links">
+                <a href="https://x.com/clitorisfun" target="_blank">Twitter</a>
+                <a href="https://pump.fun" target="_blank">Pump.fun</a>
+                <a href="https://dexscreener.com" target="_blank">DexScreener</a>
+            </div>
+            <p class="footer-copy">
+                <span>$CLITORIS</span> • No Utility • Just Vibes
+            </p>
+        </div>
+    </footer>
+    
+    <script>
+        const captions = [
+            "gm frens",
+            "wagmi",
+            "wen moon",
+            "just vibes",
+            "no utility needed",
+            "feeling cute might moon later",
+            "dev did something",
+            "community takeover",
+            "stress test complete",
+            "it's our clitoris",
+            "snowball was just the beginning",
+            "battle tested",
+            "pure vibes only"
+        ];
+        
+        function generateMeme() {
+            const input = document.getElementById('captionInput');
+            const caption = document.getElementById('memeCaption');
+            if (input.value.trim()) {
+                caption.textContent = input.value;
+            }
+        }
+        
+        function randomCaption() {
+            const caption = document.getElementById('memeCaption');
+            const input = document.getElementById('captionInput');
+            const randomIndex = Math.floor(Math.random() * captions.length);
+            caption.textContent = captions[randomIndex];
+            input.value = captions[randomIndex];
+        }
+        
+        function copyCA() {
+            const ca = document.getElementById('caAddress').textContent;
+            navigator.clipboard.writeText(ca).then(() => {
+                alert('CA copied to clipboard!');
+            });
+        }
+        
+        // Enter key for meme generator
+        document.getElementById('captionInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                generateMeme();
+            }
+        });
+    </script>
+</body>
+</html>
