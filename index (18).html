@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WORKFUN | Work From Home Through The Trenches</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --cyan: #00ffff;
+            --magenta: #ff00ff;
+            --green: #00ff88;
+            --dark: #0a0a0f;
+            --darker: #000000;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Share Tech Mono', monospace;
+            background: var(--darker);
+            color: #fff;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* INTRO ANIMATION OVERLAY */
+        .intro-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--darker);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: fadeOutOverlay 0.5s ease-out 3s forwards;
+        }
+
+        .intro-content {
+            text-align: center;
+            position: relative;
+        }
+
+        .intro-glitch-container {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            margin: 0 auto;
+        }
+
+        .glitch-frame {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 280px;
+            height: 180px;
+            border: 3px solid transparent;
+            animation: glitchFrame 0.1s infinite;
+        }
+
+        .glitch-frame::before,
+        .glitch-frame::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        .glitch-bars {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .glitch-bar {
+            position: absolute;
+            height: 4px;
+            animation: glitchBar 0.15s infinite;
+        }
+
+        .glitch-bar:nth-child(1) { top: 10%; left: -20%; width: 60px; background: var(--cyan); animation-delay: 0s; }
+        .glitch-bar:nth-child(2) { top: 20%; right: -10%; width: 80px; background: var(--magenta); animation-delay: 0.05s; }
+        .glitch-bar:nth-child(3) { top: 35%; left: -15%; width: 100px; background: #fff; animation-delay: 0.1s; }
+        .glitch-bar:nth-child(4) { top: 50%; right: -5%; width: 50px; background: var(--cyan); animation-delay: 0.02s; }
+        .glitch-bar:nth-child(5) { top: 65%; left: -25%; width: 70px; background: var(--magenta); animation-delay: 0.08s; }
+        .glitch-bar:nth-child(6) { top: 80%; right: -15%; width: 90px; background: var(--green); animation-delay: 0.03s; }
+        .glitch-bar:nth-child(7) { top: 90%; left: -10%; width: 40px; background: #fff; animation-delay: 0.07s; }
+        .glitch-bar:nth-child(8) { top: 25%; left: 80%; width: 60px; background: var(--cyan); animation-delay: 0.04s; }
+        .glitch-bar:nth-child(9) { top: 75%; left: 85%; width: 55px; background: var(--magenta); animation-delay: 0.06s; }
+        .glitch-bar:nth-child(10) { top: 45%; left: -30%; width: 45px; background: var(--green); animation-delay: 0.09s; }
+
+        .intro-orb {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 120px;
+            height: 120px;
+            background: radial-gradient(circle at 30% 30%, #6a6a7a, #3a3a4a, #2a2a3a);
+            border-radius: 50%;
+            box-shadow: 
+                0 0 30px rgba(0, 255, 255, 0.3),
+                inset 0 0 30px rgba(0, 0, 0, 0.5);
+            animation: pulseOrb 0.5s ease-in-out infinite alternate;
+        }
+
+        .intro-orb::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-30deg);
+            width: 40px;
+            height: 18px;
+            background: linear-gradient(90deg, #4a9a7a, #3a8a6a);
+            border-radius: 20px;
+            box-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+        }
+
+        .intro-cursor {
+            position: absolute;
+            top: 55%;
+            left: 60%;
+            width: 50px;
+            height: 50px;
+            animation: cursorBlink 0.3s ease-in-out infinite alternate;
+        }
+
+        .intro-cursor svg {
+            width: 100%;
+            height: 100%;
+            filter: drop-shadow(0 0 10px var(--green));
+        }
+
+        .cursor-sparks {
+            position: absolute;
+            top: 0;
+            left: 30px;
+            font-size: 24px;
+            color: var(--green);
+            text-shadow: 0 0 10px var(--green);
+            animation: sparkle 0.2s ease-in-out infinite;
+        }
+
+        .intro-text {
+            position: absolute;
+            bottom: -60px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 48px;
+            font-weight: 900;
+            letter-spacing: 8px;
+            opacity: 0;
+            animation: textReveal 0.8s ease-out 1.5s forwards;
+        }
+
+        .intro-text span:nth-child(1) { color: var(--cyan); text-shadow: 0 0 20px var(--cyan); }
+        .intro-text span:nth-child(2) { color: var(--magenta); text-shadow: 0 0 20px var(--magenta); }
+        .intro-text span:nth-child(3) { color: #fff; text-shadow: 0 0 20px #fff; }
+        .intro-text span:nth-child(4) { color: var(--green); text-shadow: 0 0 20px var(--green); }
+        .intro-text span:nth-child(5) { color: var(--cyan); text-shadow: 0 0 20px var(--cyan); }
+        .intro-text span:nth-child(6) { color: var(--magenta); text-shadow: 0 0 20px var(--magenta); }
+        .intro-text span:nth-child(7) { color: var(--green); text-shadow: 0 0 20px var(--green); }
+
+        @keyframes glitchFrame {
+            0%, 100% { border-color: var(--cyan); }
+            25% { border-color: var(--magenta); transform: translate(-50%, -50%) skew(1deg); }
+            50% { border-color: var(--green); transform: translate(-50%, -50%) skew(-1deg); }
+            75% { border-color: #fff; }
+        }
+
+        @keyframes glitchBar {
+            0%, 100% { transform: translateX(0) scaleX(1); opacity: 1; }
+            25% { transform: translateX(20px) scaleX(1.5); opacity: 0.8; }
+            50% { transform: translateX(-10px) scaleX(0.8); opacity: 0.6; }
+            75% { transform: translateX(30px) scaleX(1.2); opacity: 0.9; }
+        }
+
+        @keyframes pulseOrb {
+            0% { box-shadow: 0 0 30px rgba(0, 255, 255, 0.3), inset 0 0 30px rgba(0, 0, 0, 0.5); }
+            100% { box-shadow: 0 0 50px rgba(255, 0, 255, 0.4), inset 0 0 30px rgba(0, 0, 0, 0.5); }
+        }
+
+        @keyframes cursorBlink {
+            0% { opacity: 1; transform: scale(1); }
+            100% { opacity: 0.7; transform: scale(1.1); }
+        }
+
+        @keyframes sparkle {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.3); }
+        }
+
+        @keyframes textReveal {
+            0% { opacity: 0; transform: translateX(-50%) translateY(20px); letter-spacing: 20px; }
+            100% { opacity: 1; transform: translateX(-50%) translateY(0); letter-spacing: 8px; }
+        }
+
+        @keyframes fadeOutOverlay {
+            0% { opacity: 1; pointer-events: all; }
+            100% { opacity: 0; pointer-events: none; }
+        }
+
+        /* SCANLINES */
+        .scanlines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(0, 0, 0, 0.1) 0px,
+                rgba(0, 0, 0, 0.1) 1px,
+                transparent 1px,
+                transparent 3px
+            );
+        }
+
+        /* MAIN CONTENT */
+        .main-content {
+            opacity: 0;
+            animation: fadeIn 1s ease-out 3s forwards;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        /* NAVIGATION */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            background: linear-gradient(180deg, rgba(0,0,0,0.8) 0%, transparent 100%);
+        }
+
+        .logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 28px;
+            font-weight: 900;
+            letter-spacing: 4px;
+            display: flex;
+        }
+
+        .logo span:nth-child(1) { color: var(--cyan); text-shadow: 0 0 15px var(--cyan); }
+        .logo span:nth-child(2) { color: var(--magenta); text-shadow: 0 0 15px var(--magenta); }
+        .logo span:nth-child(3) { color: #fff; text-shadow: 0 0 15px #fff; }
+        .logo span:nth-child(4) { color: var(--green); text-shadow: 0 0 15px var(--green); }
+        .logo span:nth-child(5) { color: var(--cyan); text-shadow: 0 0 15px var(--cyan); }
+        .logo span:nth-child(6) { color: var(--magenta); text-shadow: 0 0 15px var(--magenta); }
+        .logo span:nth-child(7) { color: var(--green); text-shadow: 0 0 15px var(--green); }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: #888;
+            text-decoration: none;
+            font-size: 14px;
+            letter-spacing: 2px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: var(--cyan);
+            text-shadow: 0 0 10px var(--cyan);
+        }
+
+        /* FLOATING X BUTTON */
+        .x-link {
+            position: fixed;
+            bottom: 40px;
+            right: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 60px;
+            height: 60px;
+            border: 2px solid var(--cyan);
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            animation: xPulse 2s ease-in-out infinite;
+            z-index: 1001;
+            background: rgba(0, 0, 0, 0.8);
+        }
+
+        .x-link:hover {
+            background: var(--cyan);
+            box-shadow: 0 0 30px var(--cyan);
+        }
+
+        .x-link:hover svg {
+            fill: var(--darker);
+        }
+
+        .x-link svg {
+            width: 28px;
+            height: 28px;
+            fill: var(--cyan);
+            transition: all 0.3s ease;
+        }
+
+        @keyframes xPulse {
+            0%, 100% { box-shadow: 0 0 10px var(--cyan); }
+            50% { box-shadow: 0 0 25px var(--cyan), 0 0 50px var(--magenta); }
+        }
+
+        /* HERO SECTION */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            padding: 100px 20px;
+        }
+
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(ellipse at 20% 80%, rgba(0, 255, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 20%, rgba(255, 0, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 50%, rgba(0, 255, 136, 0.05) 0%, transparent 70%);
+        }
+
+        .grid-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: gridMove 20s linear infinite;
+        }
+
+        @keyframes gridMove {
+            0% { transform: perspective(500px) rotateX(60deg) translateY(0); }
+            100% { transform: perspective(500px) rotateX(60deg) translateY(50px); }
+        }
+
+        .hero-announcement {
+            font-size: clamp(18px, 4vw, 28px);
+            color: var(--cyan);
+            text-shadow: 0 0 20px var(--cyan), 0 0 40px var(--magenta);
+            margin-bottom: 30px;
+            letter-spacing: 2px;
+            animation: announcementGlow 2s ease-in-out infinite;
+            font-style: italic;
+            text-align: center;
+            z-index: 10;
+        }
+
+        @keyframes announcementGlow {
+            0%, 100% { 
+                text-shadow: 0 0 10px var(--cyan), 0 0 20px var(--magenta);
+                opacity: 0.9;
+            }
+            50% { 
+                text-shadow: 0 0 20px var(--cyan), 0 0 40px var(--magenta), 0 0 60px var(--green);
+                opacity: 1;
+            }
+        }
+
+        .hero-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(40px, 12vw, 120px);
+            font-weight: 900;
+            letter-spacing: 5px;
+            text-align: center;
+            position: relative;
+            z-index: 10;
+            animation: heroGlitch 3s ease-in-out infinite;
+            white-space: nowrap;
+        }
+
+        .hero-title span {
+            display: inline-block;
+            animation: letterFloat 2s ease-in-out infinite;
+        }
+
+        .hero-title span:nth-child(1) { color: var(--cyan); text-shadow: 0 0 30px var(--cyan), 0 0 60px var(--cyan); animation-delay: 0s; }
+        .hero-title span:nth-child(2) { color: var(--magenta); text-shadow: 0 0 30px var(--magenta), 0 0 60px var(--magenta); animation-delay: 0.1s; }
+        .hero-title span:nth-child(3) { color: #fff; text-shadow: 0 0 30px #fff, 0 0 60px #fff; animation-delay: 0.2s; }
+        .hero-title span:nth-child(4) { color: var(--green); text-shadow: 0 0 30px var(--green), 0 0 60px var(--green); animation-delay: 0.3s; }
+        .hero-title span:nth-child(5) { color: var(--cyan); text-shadow: 0 0 30px var(--cyan), 0 0 60px var(--cyan); animation-delay: 0.4s; }
+        .hero-title span:nth-child(6) { color: var(--magenta); text-shadow: 0 0 30px var(--magenta), 0 0 60px var(--magenta); animation-delay: 0.5s; }
+        .hero-title span:nth-child(7) { color: var(--green); text-shadow: 0 0 30px var(--green), 0 0 60px var(--green); animation-delay: 0.6s; }
+
+        @keyframes letterFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes heroGlitch {
+            0%, 90%, 100% { transform: translate(0); }
+            92% { transform: translate(-5px, 2px); }
+            94% { transform: translate(5px, -2px); }
+            96% { transform: translate(-3px, -1px); }
+            98% { transform: translate(3px, 1px); }
+        }
+
+        .hero-subtitle {
+            font-size: 18px;
+            color: #888;
+            letter-spacing: 8px;
+            margin-top: 20px;
+            text-transform: uppercase;
+            animation: subtitleFade 2s ease-out;
+        }
+
+        @keyframes subtitleFade {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        /* CA BAR */
+        .ca-bar {
+            margin-top: 50px;
+            padding: 20px 40px;
+            background: linear-gradient(90deg, 
+                rgba(0, 255, 255, 0.1), 
+                rgba(255, 0, 255, 0.1), 
+                rgba(0, 255, 136, 0.1));
+            border: 2px solid;
+            border-image: linear-gradient(90deg, var(--cyan), var(--magenta), var(--green)) 1;
+            position: relative;
+            overflow: hidden;
+            animation: caBarPulse 3s ease-in-out infinite;
+        }
+
+        .ca-bar::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            animation: caBarShine 3s ease-in-out infinite;
+        }
+
+        @keyframes caBarShine {
+            0% { left: -100%; }
+            50%, 100% { left: 100%; }
+        }
+
+        @keyframes caBarPulse {
+            0%, 100% { box-shadow: 0 0 20px rgba(0, 255, 255, 0.3); }
+            50% { box-shadow: 0 0 40px rgba(255, 0, 255, 0.4); }
+        }
+
+        .ca-label {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 12px;
+            color: var(--cyan);
+            letter-spacing: 4px;
+            margin-bottom: 10px;
+        }
+
+        .ca-value {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 24px;
+            font-weight: 700;
+            background: linear-gradient(90deg, var(--cyan), var(--magenta), var(--green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 6px;
+            animation: comingSoonBlink 1.5s ease-in-out infinite;
+        }
+
+        @keyframes comingSoonBlink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* FLOATING GLITCH ELEMENTS */
+        .floating-glitch {
+            position: absolute;
+            width: 100px;
+            height: 4px;
+            animation: floatGlitch 4s ease-in-out infinite;
+        }
+
+        .floating-glitch:nth-child(1) { top: 20%; left: 5%; background: var(--cyan); animation-delay: 0s; }
+        .floating-glitch:nth-child(2) { top: 30%; right: 10%; background: var(--magenta); animation-delay: 0.5s; width: 80px; }
+        .floating-glitch:nth-child(3) { top: 70%; left: 15%; background: var(--green); animation-delay: 1s; width: 60px; }
+        .floating-glitch:nth-child(4) { top: 80%; right: 5%; background: #fff; animation-delay: 1.5s; width: 90px; }
+        .floating-glitch:nth-child(5) { top: 50%; left: 2%; background: var(--magenta); animation-delay: 2s; width: 70px; }
+
+        @keyframes floatGlitch {
+            0%, 100% { transform: translateX(0) scaleX(1); opacity: 0.7; }
+            25% { transform: translateX(30px) scaleX(1.5); opacity: 1; }
+            50% { transform: translateX(-20px) scaleX(0.5); opacity: 0.3; }
+            75% { transform: translateX(10px) scaleX(1.2); opacity: 0.8; }
+        }
+
+        /* ABOUT SECTION */
+        .about {
+            padding: 100px 20px;
+            position: relative;
+            background: linear-gradient(180deg, var(--darker) 0%, rgba(10, 10, 15, 1) 100%);
+        }
+
+        .about-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 48px;
+            font-weight: 900;
+            text-align: center;
+            margin-bottom: 60px;
+            position: relative;
+        }
+
+        .section-title span:nth-child(1) { color: var(--cyan); }
+        .section-title span:nth-child(2) { color: var(--magenta); }
+        .section-title span:nth-child(3) { color: var(--green); }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+        }
+
+        .about-card {
+            background: rgba(20, 20, 30, 0.8);
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            padding: 40px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s ease;
+        }
+
+        .about-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--cyan), var(--magenta), var(--green));
+        }
+
+        .about-card:hover {
+            border-color: var(--cyan);
+            box-shadow: 0 0 40px rgba(0, 255, 255, 0.2);
+            transform: translateY(-5px);
+        }
+
+        .card-icon {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        .card-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: var(--cyan);
+        }
+
+        .card-text {
+            color: #aaa;
+            line-height: 1.8;
+            font-size: 14px;
+        }
+
+        /* TOKENOMICS SECTION */
+        .tokenomics {
+            padding: 100px 20px;
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        .tokenomics-container {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .tokenomics-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            border-bottom: 1px solid rgba(0, 255, 255, 0.1);
+        }
+
+        .tokenomics-label {
+            color: #888;
+            font-size: 14px;
+            letter-spacing: 2px;
+        }
+
+        .tokenomics-value {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 20px;
+            color: var(--green);
+            text-shadow: 0 0 10px var(--green);
+        }
+
+        /* FOOTER */
+        footer {
+            padding: 40px 20px;
+            text-align: center;
+            border-top: 1px solid rgba(0, 255, 255, 0.1);
+        }
+
+        .footer-text {
+            color: #555;
+            font-size: 12px;
+            letter-spacing: 2px;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            nav {
+                padding: 15px 20px;
+            }
+
+            .logo {
+                font-size: 20px;
+            }
+
+            .nav-links a:not(.x-link) {
+                display: none;
+            }
+
+            .hero-title {
+                letter-spacing: 2px;
+                white-space: nowrap;
+            }
+
+            .ca-bar {
+                padding: 15px 20px;
+            }
+
+            .ca-value {
+                font-size: 16px;
+                letter-spacing: 3px;
+            }
+
+            .intro-text {
+                font-size: 32px;
+                letter-spacing: 4px;
+            }
+
+            .intro-glitch-container {
+                width: 250px;
+                height: 250px;
+            }
+
+            .intro-orb {
+                width: 100px;
+                height: 100px;
+            }
+
+            .x-link {
+                bottom: 20px;
+                right: 20px;
+                width: 50px;
+                height: 50px;
+            }
+
+            .x-link svg {
+                width: 24px;
+                height: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- INTRO ANIMATION -->
+    <div class="intro-overlay">
+        <div class="intro-content">
+            <div class="intro-glitch-container">
+                <div class="glitch-frame"></div>
+                <div class="glitch-bars">
+                    <div class="glitch-bar"></div>
+                    <div class="glitch-bar"></div>
+                    <div class="glitch-bar"></div>
+                    <div class="glitch-bar"></div>
+                    <div class="glitch-bar"></div>
+                    <div class="glitch-bar"></div>
+                    <div class="glitch-bar"></div>
+                    <div class="glitch-bar"></div>
+                    <div class="glitch-bar"></div>
+                    <div class="glitch-bar"></div>
+                </div>
+                <div class="intro-orb"></div>
+                <div class="intro-cursor">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#00ff88" stroke-width="2">
+                        <path d="M3 3l7.07 16.97 2.51-7.39 7.39-2.51L3 3z"/>
+                    </svg>
+                    <span class="cursor-sparks">✦</span>
+                </div>
+            </div>
+            <div class="intro-text">
+                <span>W</span><span>O</span><span>R</span><span>K</span><span>F</span><span>U</span><span>N</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- SCANLINES OVERLAY -->
+    <div class="scanlines"></div>
+
+    <!-- FLOATING X BUTTON -->
+    <a href="https://x.com/workfunpf" target="_blank" class="x-link">
+        <svg viewBox="0 0 24 24">
+            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+        </svg>
+    </a>
+
+    <!-- MAIN CONTENT -->
+    <div class="main-content">
+        <!-- NAVIGATION -->
+        <nav>
+            <div class="logo">
+                <span>W</span><span>O</span><span>R</span><span>K</span><span>F</span><span>U</span><span>N</span>
+            </div>
+            <div class="nav-links">
+                <a href="#about">ABOUT</a>
+                <a href="#tokenomics">TOKENOMICS</a>
+            </div>
+        </nav>
+
+        <!-- HERO SECTION -->
+        <section class="hero">
+            <div class="hero-bg"></div>
+            <div class="grid-bg"></div>
+            
+            <div class="floating-glitch"></div>
+            <div class="floating-glitch"></div>
+            <div class="floating-glitch"></div>
+            <div class="floating-glitch"></div>
+            <div class="floating-glitch"></div>
+
+            <div class="hero-announcement">
+                a1lon9 is back... time to lock in like never before..
+            </div>
+
+            <h1 class="hero-title">
+                <span>W</span><span>O</span><span>R</span><span>K</span><span>F</span><span>U</span><span>N</span>
+            </h1>
+            <p class="hero-subtitle">Work From Home Through The Trenches</p>
+
+            <div class="ca-bar">
+                <div class="ca-label">CONTRACT ADDRESS</div>
+                <div class="ca-value">(Being added)</div>
+            </div>
+        </section>
+
+        <!-- ABOUT SECTION -->
+        <section class="about" id="about">
+            <div class="about-container">
+                <h2 class="section-title">
+                    <span>THE </span><span>WORK</span><span>FUN</span>
+                </h2>
+
+                <div class="about-grid">
+                    <div class="about-card">
+                        <div class="card-icon">💼</div>
+                        <h3 class="card-title">THE NARRATIVE</h3>
+                        <p class="card-text">This is your chance to work from home through pump.fun and the trenches. No more 9-5. No more commute. Just you, your bags, and the blockchain. Welcome to the future of work.</p>
+                    </div>
+
+                    <div class="about-card">
+                        <div class="card-icon">⚡</div>
+                        <h3 class="card-title">AUTO FLYWHEEL</h3>
+                        <p class="card-text">You don't need to get a job. WORKFUN auto flywheels and pays you for holding no matter the market cap or amount. Your bags work while you sleep.</p>
+                    </div>
+
+                    <div class="about-card">
+                        <div class="card-icon">📈</div>
+                        <h3 class="card-title">HOLD MORE = EARN MORE</h3>
+                        <p class="card-text">The higher you hold, the more % of the pool you get. We're mixing creator fees and total dev supply to create the ultimate passive income machine.</p>
+                    </div>
+
+                    <div class="about-card">
+                        <div class="card-icon">🔥</div>
+                        <h3 class="card-title">BUILT FOR DEGENS</h3>
+                        <p class="card-text">Born in the trenches, built for the trenches. WORKFUN isn't just a token—it's a lifestyle. Join the revolution and make the blockchain work for you.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TOKENOMICS SECTION -->
+        <section class="tokenomics" id="tokenomics">
+            <div class="tokenomics-container">
+                <h2 class="section-title">
+                    <span>TOKEN</span><span>O</span><span>MICS</span>
+                </h2>
+
+                <div class="tokenomics-item">
+                    <span class="tokenomics-label">TOTAL SUPPLY</span>
+                    <span class="tokenomics-value">1,000,000,000</span>
+                </div>
+                <div class="tokenomics-item">
+                    <span class="tokenomics-label">TAX</span>
+                    <span class="tokenomics-value">0%</span>
+                </div>
+                <div class="tokenomics-item">
+                    <span class="tokenomics-label">LP</span>
+                    <span class="tokenomics-value">BURNED</span>
+                </div>
+                <div class="tokenomics-item">
+                    <span class="tokenomics-label">CONTRACT</span>
+                    <span class="tokenomics-value">RENOUNCED</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer>
+            <p class="footer-text">© 2026 WORKFUN | BUILT ON SOLANA | WORK FROM THE TRENCHES</p>
+        </footer>
+    </div>
+
+    <script>
+        // Remove intro overlay after animation
+        setTimeout(() => {
+            const introOverlay = document.querySelector('.intro-overlay');
+            if (introOverlay) {
+                introOverlay.style.display = 'none';
+            }
+        }, 4000);
+
+        // Smooth scroll for nav links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Parallax effect on scroll
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const heroTitle = document.querySelector('.hero-title');
+            if (heroTitle) {
+                heroTitle.style.transform = `translateY(${scrolled * 0.3}px)`;
+            }
+        });
+
+        // Random glitch effect on title
+        const heroTitle = document.querySelector('.hero-title');
+        setInterval(() => {
+            if (Math.random() > 0.95) {
+                heroTitle.style.textShadow = `
+                    ${Math.random() * 10 - 5}px ${Math.random() * 10 - 5}px 0 var(--cyan),
+                    ${Math.random() * 10 - 5}px ${Math.random() * 10 - 5}px 0 var(--magenta)
+                `;
+                setTimeout(() => {
+                    heroTitle.style.textShadow = '';
+                }, 100);
+            }
+        }, 100);
+    </script>
+</body>
+</html>
